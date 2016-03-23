@@ -11,10 +11,10 @@ module App
   def App.tasks
     # This is an example
     @all_tasks ||= [
-      { message: "cool tweet!", id: 1},
-      { message: "badd tweet!", id: 2},
-      { message: "ohno tweet!", id: 3},
-      { message: "eehhh tweet", id: 4},
+      { body: "Read a ruby blog", field: "Complete", id: 1},
+      { body: "Do laundry", field: "Complete", id: 2},
+      { body: "Call mom", field: "Complete", id: 3},
+      { body: "Buy grocerries", field: "Complete", id: 4},
     ]
   end
 end
