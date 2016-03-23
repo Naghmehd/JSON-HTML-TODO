@@ -4,8 +4,8 @@ class TasksController < ApplicationController
     if request[:format] == "json"
       render App.tasks.to_json, status: "200 OK"
     else
-      @tasks = App.users
-      render_template 'test.htmle.erb'
+      @tasks = App.tasks
+      render_template 'test.html.erb'
     end
   end
 
@@ -14,17 +14,17 @@ class TasksController < ApplicationController
 
     if task
       if request[:format] == "json"
-        render user.to_json
+        render task.to_json
       else
         @task = task
-        render_template 'test.htmle.erb'
+        render_template 'test.html.erb'
       end
     end
   end
 
 # new
   def new
-    render_template 'test.htmle.erb'
+    render_template 'test.html.erb'
   end
 
   def create #post
@@ -72,7 +72,7 @@ class TasksController < ApplicationController
     private
 
     def find_task_by_id
-      App.tasks.find{ |t| t.id == params [:id].to_i }
+      App.tasks.find { |t| t.id == params[:id].to_i }
     end
 
     def render_not_found
