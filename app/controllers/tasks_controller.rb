@@ -45,7 +45,7 @@ class TasksController < ApplicationController
 
     if task
       unless params["body"].nil? || params["body"].empty?
-        task.name = params["body"]
+        task.body = params["body"]
       end
 
       render task.to_json, status: "200 OK"
