@@ -1,14 +1,86 @@
+require 'erb'
 class TasksController < ApplicationController
-  def index
-    #f = File.read('app/views/test.html')
-    #render f, status: "200 OK", as: "text/html"
-
-    render_template 'test.html'
-    # render "I am a tweet!".to_json, status: "404 NOT FOUND"
-    # render params.to_json
-    # Use the render method now to specify what should be rendered to the screen
-    # this 'render' method fills the request object.
-    # By default, all render calls will make the status "200 OK", you only need
-    # to add a status if you are changing from "200 OK" to something else.
+  def index #Get
+    if request[:format] == "json"
+      render App.tasks.to_json, status: "200 OK"
+    else
+      @tasks = App.users
+      render_template 'test.htmle.erb'
+    end
   end
+
+  def show #Get
+    task = find_task_by_id
+
+    if task
+      if request[:format] == "json"
+        render user.to_json
+      else
+        @task = task
+        render_template 'test.htmle.erb'
+      end
+    end
+  end
+
+# new
+  def new
+    render_template 'test.htmle.erb'
+  end
+
+  def create #post
+    last_task = App.tasks.max_by { |task| task.id}
+    new_id = last_task.id + 1
+
+    App.tasks.push(
+      Task.new(new_id, params["body"], params["field"])
+    )
+    puts App.tasks.to_json
+
+    render({ message: "Successfully created!", id: new_id }).to_json
+  end
+
+  # edit
+  def update #PUT
+    task = find_task_by_id
+
+    if task
+      unless params["body"].nil? || params["body"].empty?
+        user.name = params["body"]
+      end
+
+      unless params["field"].nil? || params["field"].empty?
+        user.field = params["field"]
+      end
+
+      render task.to_json, status: "200 OK"
+    else
+      render_not_found
+    end
+  end
+
+  def destroy #DELETE
+    task = find_user_by_id
+
+    if task
+      App.tasks.delete(task) #destory it
+        render ({ message: "Successfully Deleted Task"}).to_json
+      else
+        render_not_found
+    end
+  end
+
+    private
+
+    def find_task_by_id
+      App.tasks.find{ |t| t.id == params [:id].to_i }
+    end
+
+    def render_not_found
+      return_message = {
+        message: "User not found",
+        status: '404'
+      }.to_json
+
+      render return_message, status: "404 Not Found"
+    end
 end

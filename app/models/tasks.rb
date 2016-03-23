@@ -13,4 +13,8 @@ Class Task
       id: id
     }.to_json
   end
+
+  def Complete?
+    @complete = false
+  end
 end
