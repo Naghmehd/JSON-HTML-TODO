@@ -5,7 +5,7 @@ class TasksController < ApplicationController
       render App.tasks.to_json, status: "200 OK"
     else
       @tasks = App.tasks
-      render_template 'test.html.erb'
+      render_template 'index.html.erb'
     end
   end
 
@@ -17,14 +17,14 @@ class TasksController < ApplicationController
         render task.to_json
       else
         @task = task
-        render_template 'test.html.erb'
+        render_template 'show.html.erb'
       end
     end
   end
 
 # new
   def new
-    render_template 'test.html.erb'
+    render_template 'tasks/new.html.erb'
   end
 
   def create #post
@@ -32,11 +32,11 @@ class TasksController < ApplicationController
     new_id = last_task.id + 1
 
     App.tasks.push(
-      Task.new(new_id, params["body"], params["field"])
+      Task.new(new_id, params["body"], false)
     )
     puts App.tasks.to_json
 
-    render({ message: "Successfully created!", id: new_id }).to_json
+    render({ message: "Successfully created!", id: new_id }.to_json)
   end
 
   # edit
@@ -45,11 +45,7 @@ class TasksController < ApplicationController
 
     if task
       unless params["body"].nil? || params["body"].empty?
-        user.name = params["body"]
-      end
-
-      unless params["field"].nil? || params["field"].empty?
-        user.field = params["field"]
+        task.name = params["body"]
       end
 
       render task.to_json, status: "200 OK"
@@ -59,7 +55,7 @@ class TasksController < ApplicationController
   end
 
   def destroy #DELETE
-    task = find_user_by_id
+    task = find_task_by_id
 
     if task
       App.tasks.delete(task) #destory it
@@ -77,7 +73,7 @@ class TasksController < ApplicationController
 
     def render_not_found
       return_message = {
-        message: "User not found",
+        message: "Task not found",
         status: '404'
       }.to_json
 

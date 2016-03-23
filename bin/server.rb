@@ -7,14 +7,13 @@ require_relative '../config/router'
 require_relative '../lib/all'
 
 module App
-  # Place all data here inside of a method
+
   def App.tasks
-    # This is an example
     @all_tasks ||= [
-      { body: "Read a ruby blog", field: @complete, id: 1},
-      { body: "Do laundry", field: @complete, id: 2},
-      { body: "Call mom", field: @complete, id: 3},
-      { body: "Buy grocerries", field: @complete, id: 4},
+      (Task.new(1, "Finish Homework", false)),
+      (Task.new(2, "Read article on Ruby", false)),
+      (Task.new(3, "Write a blog", false)),
+      (Task.new(4, "Call mom", false))
     ]
   end
 end
